@@ -289,6 +289,17 @@ jobs:
           command: |
             yarn --cwd=packages/cli run celocli account:new
 
+      - run:
+          name: Install and test the npm package
+          command: |
+            set -euo pipefail
+            set -x
+            cd /tmp
+            npm install ~/app/packages/cli
+            # To ensure that generated lib is being used and not the source src.
+            mv packages/contractkit/src/ packages/contractkit/src1
+            ./node_modules/.bin/celocli account:new # Small test
+
   end-to-end-geth-transfer-test:
     <<: *defaults
     steps:
